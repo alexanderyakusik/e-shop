@@ -26,8 +26,6 @@ namespace EShop
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
-
                 options.Password = new PasswordOptions
                 {
                     RequireDigit = false,

@@ -1,10 +1,14 @@
 ﻿@page
+@using EShop.Infrastructure.Extensions
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
 }
 
+@if (!User.IsSuperUser())
+{
 <h1>@ViewData["Title"]</h1>
+}
 
 <div class="row">
     <div class="col-md-4">
@@ -27,6 +31,14 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            @if (User.IsSuperUser())
+            {
+            <div class="form-group">
+                <label asp-for="Input.Role"></label>
+                <select asp-for="Input.Role" asp-items="@Model.RolesSelectList" class="form-control"></select>
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
+            </div>
+            }
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>

@@ -1,4 +1,5 @@
 using EShop.Data;
+using EShop.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -26,8 +27,6 @@ namespace EShop
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
-
                 options.Password = new PasswordOptions
                 {
                     RequireDigit = false,
@@ -37,9 +36,13 @@ namespace EShop
                     RequireUppercase = false,
                     RequireNonAlphanumeric = false,
                 };
-            }).AddEntityFrameworkStores<ApplicationDbContext>();
+            })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.Configure<SuperUser>(Configuration.GetSection("SuperUser"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

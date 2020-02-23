@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using EShop.Models.App;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Data
@@ -9,5 +10,7 @@ namespace EShop.Data
             : base(options)
         {
         }
+
+        public DbSet<Good> Good { get; set; }
     }
 }

@@ -1,47 +1,109 @@
-@model IEnumerable<EShop.Models.App.Good>
+@using EShop.Infrastructure.Extensions;
+
+@model EShop.Models.App.StorageGoodsModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Storage</h1>
+<h1>Goods</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+
+<ul class="nav nav-tabs" id="tab-container" data-active-tab="@TempData.GetActiveTab()">
+    <li class="nav-item">
+        <a class="nav-link active" id="storage-tab" href="#storage" data-toggle="tab">Storage</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="catalog-tab" href="#catalog" data-toggle="tab">Catalog</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="storage">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StorageGoods.FirstOrDefault().Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StorageGoods.FirstOrDefault().Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StorageGoods.FirstOrDefault().Amount)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.StorageGoods)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                            <a asp-action="AddToCatalog" asp-route-id="@item.Id">To catalog</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane" id="catalog">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CatalogGoods.FirstOrDefault().Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CatalogGoods.FirstOrDefault().Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CatalogGoods.FirstOrDefault().Amount)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CatalogGoods)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                            <a asp-action="AddToStorage" asp-route-id="@item.Id">To storage</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/tabs.js"></script>
 }
-    </tbody>
-</table>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EShop.Data;
 using EShop.Models.App;
+using EShop.Infrastructure.Extensions;
 
 namespace EShop.Controllers
 {
@@ -22,7 +23,10 @@ namespace EShop.Controllers
         // GET: Storage
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Good.Where(good => !good.InCatalog).ToListAsync());
+            var storageGoods = await _context.Good.Where(good => !good.InCatalog).ToListAsync();
+            var catalogGoods = await _context.Good.Where(good => good.InCatalog).ToListAsync();
+
+            return View(new StorageGoodsModel { StorageGoods = storageGoods, CatalogGoods = catalogGoods, });
         }
 
         // GET: Storage/Details/5
@@ -142,6 +146,38 @@ namespace EShop.Controllers
             var good = await _context.Good.FindAsync(id);
             _context.Good.Remove(good);
             await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> AddToCatalog(int? id)
+        {
+            return await SwitchStorage(id, "Storage");
+        }
+
+        public async Task<IActionResult> AddToStorage(int? id)
+        {
+            return await SwitchStorage(id, "Catalog");
+        }
+
+        private async Task<IActionResult> SwitchStorage(int? id, string source)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var good = await _context.Good.FindAsync(id);
+            if (good == null)
+            {
+                return NotFound();
+            }
+
+            good.InCatalog = !good.InCatalog;
+            _context.Update(good);
+            await _context.SaveChangesAsync();
+
+            TempData.SetActiveTab(source);
+
             return RedirectToAction(nameof(Index));
         }
 

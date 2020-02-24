@@ -1,5 +1,63 @@
-﻿@{
+﻿@using EShop.Infrastructure.Extensions;
+
+@model IEnumerable<EShop.Models.App.Good>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div></div>
+<h1>Catalog</h1>
+
+<div style="margin-top: 40px;">
+    @if (User.IsUser())
+    {
+    <div style="display: inline-flex; align-items: center;">
+        <a asp-action="Index" asp-controller="Cart">Go to cart</a>
+        <button id="clear-cart" class="btn btn-link" style="margin-left: 20px;">Clear cart</button>
+    </div>
+    }
+    <table class="table" style="margin-top: 8px;">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    @if (User.IsUser())
+                    {
+                    <td>
+                        <button data-cart="add" data-id="@item.Id" data-max="@item.Amount" class="btn btn-link">Add to cart</button> |
+                        <button data-cart="remove" data-id="@item.Id" class="btn btn-link">Remove from cart</button>
+                    </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/cart.js"></script>
+    <script src="~/js/catalog.js"></script>
+}

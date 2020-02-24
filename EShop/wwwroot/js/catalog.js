@@ -8,6 +8,7 @@
         initializeCartAdd(cart, true);
         initializeCartRemove(cart, true);
         initializeClearCart(cart);
+        initializeGoToCart(cart);
     });
 
     function initializeCartAdd(cart, withListeners) {
@@ -42,6 +43,7 @@
                     }
 
                     initializeCartRemove(cart, false);
+                    initializeGoToCart(cart);
                 });
             }
         }
@@ -62,6 +64,7 @@
                     link.disabled = true;
 
                     initializeCartAdd(cart, false);
+                    initializeGoToCart(cart);
                 });
             }
         }
@@ -77,6 +80,27 @@
 
             initializeCartAdd(cart, false);
             initializeCartRemove(cart, false);
-        })
+            initializeGoToCart(cart);
+        });
+    }
+
+    function initializeGoToCart(cart) {
+        const link = document.getElementById('to-cart');
+        if (!link) {
+            return;
+        }
+
+        const param = getGoToCartItemsParam(cart.getItems());
+        link.href = `/Cart/Index?items=${param}`;
+    }
+
+    function getGoToCartItemsParam(items) {
+        const result = [];
+
+        for (let id in items) {
+            result.push({ Id: id, Amount: items[id] });
+        }
+
+        return encodeURIComponent(JSON.stringify(result));
     }
 })();

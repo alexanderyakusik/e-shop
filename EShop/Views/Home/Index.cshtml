@@ -12,7 +12,7 @@
     @if (User.IsUser())
     {
     <div style="display: inline-flex; align-items: center;">
-        <a asp-action="Index" asp-controller="Cart">Go to cart</a>
+        <a id="to-cart" href="/Cart/Index">Go to cart</a>
         <button id="clear-cart" class="btn btn-link" style="margin-left: 20px;">Clear cart</button>
     </div>
     }

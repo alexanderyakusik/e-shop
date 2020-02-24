@@ -46,6 +46,22 @@ namespace EShop.Controllers
         {
             var cartItems = JsonConvert.DeserializeObject<IEnumerable<CartItemModel>>(WebUtility.UrlDecode(items));
 
+            foreach (var cartItem in cartItems)
+            {
+                var good = _context.Good.First(good => good.Id == cartItem.Id);
+
+                good.Amount -= cartItem.Amount;
+                if (good.Amount > 0)
+                {
+                    _context.Update(good);
+                }
+                else
+                {
+                    _context.Remove(good);
+                }
+            }
+
+            await _context.SaveChangesAsync();
             TempData.AddNotificationMessage(new Notification { Type = NotificationType.Success, Message = "Order successfully created" });
 
             return LocalRedirect("/");

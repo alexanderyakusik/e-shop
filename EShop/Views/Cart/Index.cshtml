@@ -1,1 +1,45 @@
-﻿<h1>Cart</h1>
+﻿@model IEnumerable<EShop.Models.App.Good>
+
+<h1>Cart</h1>
+
+<div style="margin-top: 40px;">
+    <table class="table" style="margin-top: 8px;">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 10px;">
+    <h5>Total Price: @Model.Sum(item => item.Price)</h5>
+</div>
+
+<div style="margin-top: 20px;">
+    <a href="/Cart/Order?@Context.Request.QueryString.ToUriComponent().Substring(1)">Order</a>
+</div>

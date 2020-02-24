@@ -2,47 +2,54 @@
 
 <h1>Cart</h1>
 
-<div style="margin-top: 40px;">
-    <table class="table" style="margin-top: 8px;">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Amount)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+@if (Model.Any())
+{
+    <div style="margin-top: 40px;">
+        <table class="table" style="margin-top: 8px;">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Amount)
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Amount)
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
-<div style="margin-top: 10px;">
-    <h5>Total Price: @Model.Sum(item => item.Price * item.Amount)</h5>
-</div>
+    <div style="margin-top: 10px;">
+        <h5>Total Price: @Model.Sum(item => item.Price * item.Amount)</h5>
+    </div>
 
-<div style="margin-top: 20px;">
-    <a id="order" href="/Cart/Order?@Context.Request.QueryString.ToUriComponent().Substring(1)">Order</a>
-</div>
+    <div style="margin-top: 20px;">
+        <a id="order" href="/Cart/Order?@Context.Request.QueryString.ToUriComponent().Substring(1)">Order</a>
+    </div>
+}
+else
+{
+    <div style="margin-top: 40px;"><h4>Cart is empty</h4></div>
+}
 
 @section Scripts {
     <script src="~/js/cart.js"></script>

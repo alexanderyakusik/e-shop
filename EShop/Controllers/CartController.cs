@@ -51,7 +51,14 @@ namespace EShop.Controllers
                 var good = _context.Good.First(good => good.Id == cartItem.Id);
 
                 good.Amount -= cartItem.Amount;
-                _context.Update(good);
+                if (good.Amount > 0)
+                {
+                    _context.Update(good);
+                }
+                else
+                {
+                    _context.Remove(good);
+                }
             }
 
             await _context.SaveChangesAsync();

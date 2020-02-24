@@ -37,9 +37,14 @@
 </div>
 
 <div style="margin-top: 10px;">
-    <h5>Total Price: @Model.Sum(item => item.Price)</h5>
+    <h5>Total Price: @Model.Sum(item => item.Price * item.Amount)</h5>
 </div>
 
 <div style="margin-top: 20px;">
-    <a href="/Cart/Order?@Context.Request.QueryString.ToUriComponent().Substring(1)">Order</a>
+    <a id="order" href="/Cart/Order?@Context.Request.QueryString.ToUriComponent().Substring(1)">Order</a>
 </div>
+
+@section Scripts {
+    <script src="~/js/cart.js"></script>
+    <script src="~/js/cart-order.js"></script>
+}
